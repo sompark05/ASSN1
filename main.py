@@ -3,7 +3,7 @@ import math
 import random
 
 
-# 화면을 클리어하는 ㅎ마수
+# 화면을 클리어하는 함수
 def clear_screen():
     os.system('cls')
     return
@@ -48,27 +48,20 @@ def update_stair(s_matrix, winner, step):
                 p_row_prev = COL - (p_col_prev + step) - 1
                 p_col_prev += step
         else:                                             # 계단 개수가 홀수일 때
-            if p_col_prev + step < COL // 2:
+            if p_col_prev + step < COL // 2:              # 홀수일 때는 등호가 없음
                 p_row_prev += step
                 p_col_prev += step
             else:
                 p_row_prev = COL - (p_col_prev + step) - 1
                 p_col_prev += step
     else:                                                 # 컴퓨터가 묵찌빠를 이겼을 때
-        if num_stairs % 2 == 0:                           # 계단 개수가 짝수일 때
-            if c_col_prev - step >= COL // 2:
-                c_row_prev += step
-                c_col_prev -= step
-            else:
-                c_row_prev = c_col_prev - step
-                c_col_prev -= step
-        else:                                             # 계단 개수가 홀수일 때
-            if c_col_prev - step >= COL // 2:
-                c_row_prev += step
-                c_col_prev -= step
-            else:
-                c_row_prev = c_col_prev - step
-                c_col_prev -= step
+        if c_col_prev - step >= COL // 2:
+            c_row_prev += step
+            c_col_prev -= step
+        else:
+            c_row_prev = c_col_prev - step
+            c_col_prev -= step  
+    
 
     # 업데이트한 플레이어와 컴퓨터의 row와 col을 바탕으로 s_matrix에 그림값을 넣어준다.
     if p_row_prev == c_row_prev and p_col_prev == c_col_prev:               # 플레이어와 컴퓨터가 같은 위치에 있는 상황
@@ -86,13 +79,11 @@ def update_stair(s_matrix, winner, step):
 
 # 화면에 계단과 플레이어들을 출력하는 함수
 def print_stairs(s_matrix):
-    row = len(s_matrix)
-    col = len(s_matrix[0])
 
-    # 이중 for문을 사용하여
-    for x in range(row):
-        for y in range(col):
-            print(s_matrix[x][y], end=" ")
+    # 이중 for문을 사용하여 계단 메트릭스 출력
+    for row in s_matrix:
+        for e in row:
+            print(e, end=" ")
         print()
 
 
@@ -136,6 +127,7 @@ def check_result(p_choice, c_choice):
             return 2
         return 0
 
+# 가위바위보 모양은 https://gist.github.com/wynand1004/b5c521ea8392e9c6bfe101b025c39abe 를 참조함 
 
 # 화면에 바위를 출력하는 함수
 def print_rock():
@@ -155,7 +147,7 @@ def print_paper():
          _______
     ---'    ____)____
                ______)
-              _______)
+              ________)
              _______)
     ---.__________)
     """)
@@ -178,10 +170,18 @@ if __name__ == "__main__":
     rock = "바위"
     paper = "보"
     scissor = "가위"
-
     num_stairs = 0
+
+    print("======================")
+    print("[묵찌빠 계단 오르기]")
+    print("======================")
+    start_img = create_stair(7, 11)
+    print_stairs(start_img)
+    print()
+
+
     while num_stairs < 10 or num_stairs > 30:
-        num_stairs = int(input("게임을 위한 계단의 개수를 입력해주세요. <10 ~ 30>"))
+        num_stairs = int(input("게임을 위한 계단의 개수를 입력해주세요. <10 ~ 30> >> "))
 
     # 화면 초기화
     clear_screen()
@@ -228,8 +228,9 @@ if __name__ == "__main__":
             # 컴퓨터 무작위로 가위바위보 중 하나 선택
             com = computer_choice()
             
+
             # 컴퓨터 선택 출력
-            print("[컴퓨터 선택]")
+            print("\n[컴퓨터 선택]")
             if com == rock:
                 print_rock()
             elif com == paper:
