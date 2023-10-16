@@ -270,6 +270,11 @@ if __name__ == "__main__":
             clear_screen()
             print("[묵찌빠]")
             print(f"승리 시 이동 칸 수: {step}")
+            
+            if turn == "player":
+                print("플레이어 공격, 컴퓨터 수비입니다.")
+            else:
+                print("컴퓨터 공격, 플레이어 수비입니다.")
 
             # 플레이어가 올바른 입력값을 입력할 때까지 input을 받는다
             player = player_choice()
